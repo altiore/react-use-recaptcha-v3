@@ -1,0 +1,44 @@
+{
+  "name": "react-use-recaptcha-v3",
+  "version": "1.0.0",
+  "description": "This library helps to integrate google recaptcha into your react project with hooks.",
+  "keywords": [
+    "react",
+    "react.js",
+    "recaptcha",
+    "g-recaptcha",
+    "google-recaptcha",
+    "recaptcha-v3"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "new:version": "npm version patch && npm publish && git push origin master && git push --tags",
+    "test": "npm run build",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/altiore/react-use-recaptcha-v3.git"
+  },
+  "author": {
+    "name": "Altiore",
+    "url": "https://github.com/altiore"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/altiore/react-use-recaptcha-v3/issues"
+  },
+  "homepage": "https://github.com/altiore/react-use-recaptcha-v3",
+  "peerDependencies": {
+    "react": "^16.x",
+    "prop-types": "^15.6.2"
+  },
+  "devDependencies": {
+    "react": "^16.13.1",
+    "typescript": "3.9.3"
+  },
+  "dependencies": {},
+  "sideEffects": false
+}
