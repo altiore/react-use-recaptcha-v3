@@ -1,8 +1,8 @@
 # react-use-recaptcha-v3
 
-Integration google reCaptcha with React hooks.
+Integration [Google reCaptcha](https://developers.google.com/recaptcha/docs/v3) with [React hooks](https://reactjs.org/docs/hooks-intro.html).
 
-# Google ReCaptcha V3
+# ![](https://www.gstatic.com/images/icons/material/product/2x/recaptcha_48dp.png) Google ReCaptcha V3 with React Hooks
 
 ## Installation
 
@@ -10,7 +10,7 @@ Integration google reCaptcha with React hooks.
 
 ## Usage
 
-#### 1. Get your site key for ReCaptcha V3 [here](https://www.google.com/recaptcha/admin#v3signup "V3 signup")
+#### 1. Get your [site key for ReCaptcha V3](https://www.google.com/recaptcha/admin#v3signup)
 
 #### 2. Implement [Back End side](https://developers.google.com/recaptcha/docs/verify)
 
