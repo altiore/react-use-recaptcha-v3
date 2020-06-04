@@ -16,48 +16,32 @@ Integration [Google reCaptcha](https://developers.google.com/recaptcha/docs/v3) 
 
 #### 3. Use this package to send google re-captcha token to you Back End verifier
 
-##### simplest way:
+##### RECOMMENDED:
 ```js
-import React from 'react'
-import { useReCaptcha } from 'react-use-recaptcha-v3';
-
-const UncontrolledGoogleReCaptcha = () => {
+const ControlledGoogleReCaptcha = () => {
   const siteKey = '[SET UP YOU SITE KEY HERE!!!]';
-  const { token } = useReCaptcha(siteKey);
+  const actionName = 'submit'; // you can change actionName here if you need
 
-  return (
-    <form>
-      {/* other fields here */}
-      {token ? <input name="g-recaptcha" value={token} /> : null}
-    </form>
-  );
+  const { execute } = useReCaptcha(siteKey, actionName);
+
+  const submitForm = async () => {
+    const token = await execute();
+    // submit you form with token
+  };
+
+  return <form>[ANY FORM HERE]</form>;
 };
 
 ```
 
-##### recommended way:
+##### @ALTERNATIVE with redux-form:
 ```js
-import React, { useState } from 'react';
-import { useReCaptcha } from 'react-use-recaptcha-v3';
-
-const ControlledGoogleReCaptcha = () => {
-  const [token, setToken] = useState();
-
-  const handleToken = (tokenFromGoogleResponse) => {
-    console.log('fresh token is appear here, each time actionName is changed', { tokenFromGoogleResponse });
-    setToken(tokenFromGoogleResponse);
-  };
-
+const GReCaptchaReduxFormField = ({ input: { onChange } }) => {
   const siteKey = '[SET UP YOU SITE KEY HERE!!!]';
   const actionName = 'submit'; // you can change actionName here if you need
 
-  useReCaptcha(siteKey, handleToken, actionName);
+  useReCaptcha(siteKey, actionName, onChange);
 
-  return (
-    <form>
-      {/* other fields here */}
-      {token ? <input name="g-recaptcha" value={token} /> : null}
-    </form>
-  );
+  return null;
 };
 ```
