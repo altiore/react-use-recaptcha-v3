@@ -1,32 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useReCaptcha } from 'react-use-recaptcha-v3';
-
-const UncontrolledGoogleReCaptcha = () => {
-  const siteKey = '[SET UP YOU SITE KEY HERE!!!]';
-  const { token } = useReCaptcha(siteKey);
-
-  return (
-    token ? <input name="g-recaptcha" value={token} /> : null
-  );
-};
 
 /**
  * @RECOMMENDED
  */
 const ControlledGoogleReCaptcha = () => {
-  const [myToken, setMyToken] = useState();
-
-  const handleToken = (token) => {
-    console.log('fresh token is appear here, each time actionName is changed', { token });
-    setMyToken(token);
-  };
-
   const siteKey = '[SET UP YOU SITE KEY HERE!!!]';
   const actionName = 'submit'; // you can change actionName here if you need
 
-  useReCaptcha(siteKey, handleToken, actionName);
+  const { execute } = useReCaptcha(siteKey, actionName);
 
-  return (
-    myToken ? <input name="g-recaptcha" value={myToken} /> : null
-  );
+  const submitForm = async () => {
+    const token = await execute();
+    // submit you form with token
+  };
+
+  return <form>[ANY FORM HERE]</form>;
+};
+
+/**
+ * @ALTERNATIVE with redux-form
+ */
+const GReCaptchaReduxFormField = ({ input: { onChange } }) => {
+  const siteKey = '[SET UP YOU SITE KEY HERE!!!]';
+  const actionName = 'submit'; // you can change actionName here if you need
+
+  useReCaptcha(siteKey, actionName, onChange);
+
+  return null;
 };

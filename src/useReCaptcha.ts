@@ -6,10 +6,8 @@ const checkIsReady = () => window && (window as any).grecaptcha && typeof (windo
 
 let interval: number | null = null;
 
-export const useReCaptcha = (siteKey: string, verifyCallback?: (token: string) => any, actionName: string = 'submit', throwError: boolean = true) => {
+export const useReCaptcha = (siteKey: string, actionName: string = 'submit', verifyCallback?: (token: string) => any,  throwError: boolean = true) => {
   const [isReady, setIsReady] = useState(false);
-
-  const [token, setToken] = useState();
 
   const testIsReady = useCallback(() => {
     setIsReady(() => {
@@ -54,27 +52,29 @@ export const useReCaptcha = (siteKey: string, verifyCallback?: (token: string) =
     }
   }, [siteKey, testIsReady]);
 
-  const execute = useCallback(() => {
-    return new Promise((resolve, reject) => {
-      if (isReady) {
-        (window as any).grecaptcha.execute(siteKey, { action: actionName }).then(resolve);
-      } else {
-        reject('Google Captcha not Ready yet');
-      }
-    });
-  }, [actionName, isReady, siteKey, verifyCallback]);
+  const execute = useCallback(async () => {
+    if (isReady) {
+      return (window as any).grecaptcha.execute(siteKey, { action: actionName });
+    } else {
+      throw new Error('You trying to execute grecaptcha.execute before script initialize');
+    }
+  }, [actionName, isReady, siteKey]);
 
   useEffect(() => {
     if (typeof actionName !== 'string') {
       throw new Error('actionName MUST be a string [a-z_]')
     }
-    if (typeof verifyCallback !== 'function') {
-      throw new Error('verifyCallback MUST be valid callback function (token) {}')
+    if (isReady && verifyCallback) {
+      (async function() {
+        try {
+          const resToken = await execute();
+          verifyCallback(resToken);
+        } catch (e) {
+          console.error(e);
+        }
+      })();
     }
-    if (verifyCallback) {
-      execute.then(verifyCallback || setToken);
-    }
-  }, [actionName, execute, setToken, verifyCallback])
+  }, [actionName, execute, isReady, verifyCallback])
 
-  return { execute, token, isReady };
+  return { execute, isReady };
 }
