@@ -1,6 +1,6 @@
 {
   "name": "react-use-recaptcha-v3",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "This library helps to integrate google recaptcha into your react project with hooks.",
   "keywords": [
     "react",
