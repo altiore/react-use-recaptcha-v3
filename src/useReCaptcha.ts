@@ -54,6 +54,16 @@ export const useReCaptcha = (siteKey: string, verifyCallback?: (token: string) =
     }
   }, [siteKey, testIsReady]);
 
+  const execute = useCallback(() => {
+    return new Promise((resolve, reject) => {
+      if (isReady) {
+        (window as any).grecaptcha.execute(siteKey, { action: actionName }).then(resolve);
+      } else {
+        reject('Google Captcha not Ready yet');
+      }
+    });
+  }, [actionName, isReady, siteKey, verifyCallback]);
+
   useEffect(() => {
     if (typeof actionName !== 'string') {
       throw new Error('actionName MUST be a string [a-z_]')
@@ -61,11 +71,10 @@ export const useReCaptcha = (siteKey: string, verifyCallback?: (token: string) =
     if (typeof verifyCallback !== 'function') {
       throw new Error('verifyCallback MUST be valid callback function (token) {}')
     }
-    if (isReady) {
-      (window as any).grecaptcha.execute(siteKey, { action: actionName })
-        .then(verifyCallback || setToken);
+    if (verifyCallback) {
+      execute.then(verifyCallback || setToken);
     }
-  }, [actionName, isReady, setToken, siteKey, verifyCallback])
+  }, [actionName, execute, setToken, verifyCallback])
 
-  return { token, isReady };
+  return { execute, token, isReady };
 }
