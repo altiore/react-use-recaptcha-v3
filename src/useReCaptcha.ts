@@ -6,7 +6,7 @@ const checkIsReady = () => window && (window as any).grecaptcha && typeof (windo
 
 let interval: number | null = null;
 
-export const useReCaptcha = (siteKey: string, actionName: string = 'submit', verifyCallback?: (token: string) => any,  throwError: boolean = true) => {
+export const useReCaptcha = (siteKey: string, actionName: string = 'submit', verifyCallback?: (token: string) => any,  throwError: boolean = true): { execute: Promise<string>; isReady: boolean; } => {
   const [isReady, setIsReady] = useState(false);
 
   const testIsReady = useCallback(() => {
